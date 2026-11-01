@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+data/*.tmp
+*.zip
+*.tar.gz
+# harness
+.model-patch.yml

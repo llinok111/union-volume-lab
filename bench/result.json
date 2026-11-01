@@ -1,0 +1,43 @@
+{
+  "metric": "adaptive octree <0.5% error with fewer inside-tests than naive uniform grid",
+  "config": {
+    "R": 1,
+    "d": 1,
+    "maxDepth": 6,
+    "repeats": 9,
+    "overNaive": 128
+  },
+  "coldStartMs": 46.165345,
+  "adaptive": {
+    "volume": 7.068267822265625,
+    "exact": 7.068583470577034,
+    "absErrPct": 0.004465510136825976,
+    "cells": 270920,
+    "medianMs": 29.631053,
+    "p25": 27.363949,
+    "p75": 30.01301,
+    "p95": 30.257949,
+    "min": 26.233059,
+    "stddevMs": 1.5056999610267725,
+    "rsdPct": 5.227931620799523,
+    "samples": [
+      26.233059,
+      26.733325,
+      27.363949,
+      28.859486,
+      29.631053,
+      29.956653,
+      30.01301,
+      30.161097,
+      30.257949
+    ]
+  },
+  "naive": {
+    "over": 128,
+    "cells": 2146689,
+    "volume": 6.905467443118216,
+    "absErrPct": 2.307619739340818,
+    "note": "uniform grid needs >2e9 cells (over=512) and still misses 0.5%"
+  },
+  "cellRatio": "7.9"
+}
