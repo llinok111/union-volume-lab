@@ -1,6 +1,8 @@
 # union-volume-lab
 
-**Adaptive-octree CSG union-volume estimator: reach 0.0045% relative error with 270,920 inside-tests**, where a uniform grid needs 1.35×10⁸ cells (over=512) and still misses 0.5% — measured, not claimed.
+**Adaptive-octree CSG union-volume estimator: reach 0.0045% relative error with 270,920 octree cells**, where a uniform grid needs 1.35×10⁸ cells (over=512) and still misses 0.5% — measured, not claimed.
+
+> **Metric correction (2026-11-01).** `270,920` is the **cell** count, not the number of inside-predicate calls. An instrumented run counts **642,337** `insideUnion` calls (8 corners per cell + center tests + 27-point leaf sampling). Against the 2,146,689-cell uniform grid that is **7.9× fewer cells but 3.34× fewer inside-tests**; the earlier “7.9× fewer inside-tests” conflated the two. The 0.0045% error and all timings are unchanged.
 
 Upstream: none
 
@@ -28,9 +30,9 @@ python3 -m http.server 4173   # 打开 http://localhost:4173
 
 ## 证据（`bench/result.json`，真实测得）
 
-- 两等球 d=1：**adaptive 270,920 cells → 0.0045% err**（median 26.4 ms, [p25 24.6, p75 26.6, p95 26.7], RSD 4.6%）
+- 两等球 d=1：**adaptive 270,920 cells / 642,337 inside-tests → 0.0045% err**（median 26.4 ms, [p25 24.6, p75 26.6, p95 26.7], RSD 4.6%）
 - 对照 uniform grid over=128（2.1M cells）仅 **2.31% err**；over=512（1.35×10⁸ cells）仍 **0.58% err**
-- **7.9× fewer inside-tests + ~500× more accurate** at this depth, on real measured data
+- **7.9× fewer cells / 3.34× fewer inside-tests + ~500× more accurate** at this depth, on real measured data
 - cold start: adaptive 39.7 ms; 9 warm samples, median+p25/p75+p95+stddev in `result.json`
 - exact lens formula verified: V = 4.188790, d=1 union = 7.068583, all scan rows within 0.5%
 - dual-end: `computeAt()` in node == baked `reference.json` bytes (verify asserts bit-identity)
