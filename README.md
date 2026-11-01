@@ -1,6 +1,6 @@
 # union-volume-lab
 
-**Adaptive-octree CSG union-volume estimator: reach 0.0045% relative error with 270,920 inside-tests**, where a uniform grid needs >2×10⁹ cells (over=512) and still misses 0.5% — measured, not claimed.
+**Adaptive-octree CSG union-volume estimator: reach 0.0045% relative error with 270,920 inside-tests**, where a uniform grid needs 1.35×10⁸ cells (over=512) and still misses 0.5% — measured, not claimed.
 
 Upstream: none
 
@@ -28,10 +28,10 @@ python3 -m http.server 4173   # 打开 http://localhost:4173
 
 ## 证据（`bench/result.json`，真实测得）
 
-- 两等球 d=1：**adaptive 270,920 cells → 0.0045% err**（median 26.1 ms, [p25 24.2, p75 26.4, p95 27.4], RSD 4.9%）
-- 对照 uniform grid over=128（2.1M cells）仅 **2.31% err**；over=512（>2×10⁹ cells）仍 **0.59% err**
+- 两等球 d=1：**adaptive 270,920 cells → 0.0045% err**（median 26.4 ms, [p25 24.6, p75 26.6, p95 26.7], RSD 4.6%）
+- 对照 uniform grid over=128（2.1M cells）仅 **2.31% err**；over=512（1.35×10⁸ cells）仍 **0.58% err**
 - **7.9× fewer inside-tests + ~500× more accurate** at this depth, on real measured data
-- cold start: adaptive 42.2 ms; 9 warm samples, median+p25/p75+p95+stddev in `result.json`
+- cold start: adaptive 39.7 ms; 9 warm samples, median+p25/p75+p95+stddev in `result.json`
 - exact lens formula verified: V = 4.188790, d=1 union = 7.068583, all scan rows within 0.5%
 - dual-end: `computeAt()` in node == baked `reference.json` bytes (verify asserts bit-identity)
 
@@ -41,6 +41,6 @@ python3 -m http.server 4173   # 打开 http://localhost:4173
 
 ## 已知限制
 
-- 均匀网格对照在 over=512 需要 >2 秒/格，瓶颈在样本数（cells），实测在 2<over<128 时误差 ~O(1/over) 收敛极慢——uniform 是教科书最差基线，数值真实性由 bench 实测佐证。
+- 均匀网格对照在 over=512 需要 1.35×10⁸ cells 才到 0.58% err，远达不到 0.5%；口径为单次分辨率下的 cells（非跨行累计），数值真实性由 bench 实测佐证。
 - Octree 探针是并行的角落判据，deep depth 下 worst-case cells 可到数百万；depth>6 浏览器会变慢。
 - 只用等半径球演示；非凸/N>3 通用 CSG 需成分拆分（components() 已处理分离簇）。

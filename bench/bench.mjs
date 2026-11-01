@@ -54,7 +54,8 @@ const result = {
     medianMs: median, p25, p75, p95, min, stddevMs: stddev, rsdPct: rsd, samples: times,
   },
   naive: { over: 128, cells: naiveCells, volume: naive.volume, absErrPct: naiveErr * 100,
-           note: "uniform grid needs >2e9 cells (over=512) and still misses 0.5%" },
+           over512cells: 135005697, over512errPct: 0.582,
+           note: "uniform over=512 reaches only 0.58% err with 1.35e8 cells" },
   cellRatio: (naiveCells / adaptive.cells).toFixed(1),
 };
 
